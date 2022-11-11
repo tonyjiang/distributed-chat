@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# IDE configuration
+.vscode
+
 client/node_modules/*
 server/node_modules/*
 **/socket_io.output

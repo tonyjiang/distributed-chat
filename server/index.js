@@ -12,9 +12,20 @@ const io = new Server(httpServer, {
 
 io.on('connection', (socket) => {
   console.log(`User ${socket.id} connected.`);
-  socket.on('new_message', (data) => {
+  socket.on('room_id', data => {
+    console.log('inside room_id message');
     console.log(data);
-    socket.broadcast.emit('broadcast_message', data);
+    socket.data.room_id = data.room_id;
+    console.log(`socket.data is:`);
+    console.log(socket.data);
+    socket.join(data.room_id);
+  });
+
+  socket.on('new_message', (data) => {
+    console.log('inside new_message message');
+    console.log(data.room_id);
+    console.log(socket.rooms);
+    socket.to(data.room_id).emit('broadcast_message', {message: data.message});
   })
 });
 
