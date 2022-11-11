@@ -1,6 +1,5 @@
 const http = require('http');
 const { Server } = require('socket.io');
-const cors = require('cors');
 
 const httpServer = http.createServer();
 const io = new Server(httpServer, {
@@ -25,8 +24,12 @@ io.on('connection', (socket) => {
     console.log('inside new_message message');
     console.log(data.room_id);
     console.log(socket.rooms);
-    socket.to(data.room_id).emit('broadcast_message', {message: data.message});
-  })
+    io.to(data.room_id).emit('broadcast_message', { message: data.message });
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log(`Socket ${socket.id} is disconnect; the reason is: ${reason}`);
+  });
 });
 
 httpServer.listen(3001, () => {

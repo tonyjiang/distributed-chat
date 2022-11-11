@@ -16,9 +16,14 @@ export default function Channel(props) {
     props.socket.on("broadcast_message", (data) => {
       console.log("just received broadcast message");
       console.log(data);
-      setMessages([...messages, parse(data.message)]);
+      messages.push(parse(data.message));
+      setMessages([...messages]);
     });
-  }, [messages, props]);
+
+    return () => {
+      props.socket.disconnect();
+    }
+  }, []);
 
   const parse = (mess) => {
     return JSON.parse(JSON.stringify(mess));
@@ -30,14 +35,13 @@ export default function Channel(props) {
       room_id: props.roomID,
       message: inputRef.current.value,
     });
-    setMessages([...messages, inputRef.current.value]);
     inputRef.current.value = "";
   };
 
   return (
     <div className="App">
       <input placeholder="Your message ..." ref={inputRef} />
-      <button onClick={sendMessage}>Send message</button>
+      <button onClick={sendMessage}>Send message from {props.roomID}</button>
       <ul>
         {messages.map((mess, idx) => {
           return (
