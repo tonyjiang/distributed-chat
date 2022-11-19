@@ -20,6 +20,6 @@ This should be pretty easy to deploy to production - with something like this in
 nohup node distributed_server.js > socket_output.txt &
 serve -s build (or however you serve your React code)
 ```
-If you are beyond the stage of running an MVP, maybe run SocketIO server as a service.
+If you are beyond the stage of running an MVP, maybe run SocketIO servers as a Kubernetes service.
 
 For Redis, you can either use a cloud service or deploy it as a Kubernetes service in the same cluster.
